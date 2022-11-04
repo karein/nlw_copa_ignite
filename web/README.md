@@ -36,3 +36,4 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 # Anotações
   Cada arquivo que for criado dentro de pages o next vai transformando automaticamente em uma rota
+  rem => medida relativa ao tamanho de fonte que o user tem no proprio dispositivo
