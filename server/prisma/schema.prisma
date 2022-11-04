@@ -20,4 +20,54 @@ model Pool {
   code      String
   title     String   @unique
   createdAt DateTime @default(now())
+  ownerId   String?
+
+  participants Participant[]
+  owner        User?         @relation(fields: [ownerId], references: [id])
+}
+
+model Participant {
+  id     String @id @default(cuid())
+  userId String
+  poolId String
+
+  guesses Guess[]
+  user    User    @relation(fields: [userId], references: [id])
+  pool    Pool    @relation(fields: [poolId], references: [id])
+
+  @@unique([userId, poolId])
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  avatarUrl String? //? nulable: campo de pode vir a ser null
+  createdAt DateTime @default(now())
+
+  participatingAt Participant[] //um user pode ser participante varias vezes (em vários bolões)
+  ownPools        Pool[] //armazena de quais bolões o user é DONO, e não de quanto bolões o user está participando
+}
+
+model Game {
+  id   String   @id @default(cuid())
+  date DateTime
+
+  firstTeamCountryCode  String //pode ser varchar ou text
+  secondTeamCountryCode String
+
+  guesses Guess[] //não é uma coluna no BD
+}
+
+model Guess {
+  id String @id @default(cuid())
+
+  firstTeamPoints  Int
+  secontTeamPoints Int
+  createdAt        DateTime @default(now())
+  gameId           String
+  participantId    String
+
+  participant Participant @relation(fields: [participantId], references: [id])
+  game        Game        @relation(fields: [gameId], references: [id])
 }
