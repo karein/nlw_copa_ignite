@@ -1,6 +1,6 @@
 import { REACT_APP_CLIENT_ID, REACT_APP_REDIRECT_URI } from '@env';
 
-import { createContext, ReactNode, useState } from 'react'
+import { createContext, ReactNode, useState, useEffect } from 'react'
 import * as WebBrowser from 'expo-web-browser';
 import * as AuthSession from 'expo-auth-session'
 import * as Google from 'expo-auth-session/providers/google'
@@ -31,6 +31,7 @@ export function AuthContextProvider({ children }: AuthProviderProps) {
   // console.log(AuthSession.makeRedirectUri({ useProxy: true }))
   console.log('processe env', REACT_APP_CLIENT_ID, '\n', REACT_APP_REDIRECT_URI)
 
+  const [user, setUser] = useState({} as UserProps)
   const [isUserLoading, setIsUserLoading] = useState(false)
 
   const [request, response, promptAsync] = Google.useAuthRequest({
@@ -54,14 +55,21 @@ export function AuthContextProvider({ children }: AuthProviderProps) {
     }
   }
 
+  async function signInWithGoogle(access_token: string) {
+    console.log("TOKEN DE AUTENTICAÇÂO", access_token)
+  }
+
+  useEffect(() => {
+    if (response?.type === 'success' && response.authentication?.accessToken) {
+      signInWithGoogle(response.authentication.accessToken)
+    }
+  }, [response])
+
   return (
     <AuthContext.Provider value={{
       signIn,
       isUserLoading,
-      user: {
-        name: 'John Doe',
-        avatarUrl: 'http://github.com/exampleUser.png'
-      }
+      user,
     }}>
       {children}
     </AuthContext.Provider>
