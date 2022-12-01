@@ -17,8 +17,8 @@ datasource db {
 model Pool {
   // @id => indica que o campo vai ser a primary key
   id        String   @id @default(cuid())
-  code      String
-  title     String   @unique
+  code      String   @unique
+  title     String
   createdAt DateTime @default(now())
   ownerId   String?
 
@@ -42,6 +42,7 @@ model User {
   id        String   @id @default(cuid())
   name      String
   email     String   @unique
+  googleId  String?  @unique
   avatarUrl String? //? nulable: campo de pode vir a ser null
   createdAt DateTime @default(now())
 
@@ -63,11 +64,14 @@ model Guess {
   id String @id @default(cuid())
 
   firstTeamPoints  Int
-  secontTeamPoints Int
+  secondTeamPoints Int
   createdAt        DateTime @default(now())
   gameId           String
   participantId    String
 
   participant Participant @relation(fields: [participantId], references: [id])
   game        Game        @relation(fields: [gameId], references: [id])
+
+  //como 1 participante só pode criar 1 palpite por jogo, faz sentido ter uma chave única entre participantId e gameId 
+  @@unique([participantId, gameId])
 }
