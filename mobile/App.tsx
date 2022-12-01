@@ -3,7 +3,7 @@ import { useFonts, Roboto_400Regular, Roboto_500Medium, Roboto_700Bold } from '@
 
 import { THEME } from './src/styles/theme';
 
-import { Pools } from './src/screens/Pools';
+import { Routes } from './src/routes';
 import { Loading } from './src/components/Loading';
 
 import { AuthContextProvider } from "./src/contexts/AuthContext";
@@ -20,7 +20,7 @@ export default function App() {
           translucent
         />
 
-        {fontsLoaded ? <Pools /> : <Loading />}
+        {fontsLoaded ? <Routes /> : <Loading />}
       </AuthContextProvider>
     </NativeBaseProvider>
   );

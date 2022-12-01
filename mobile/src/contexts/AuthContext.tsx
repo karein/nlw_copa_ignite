@@ -1,9 +1,12 @@
 import { REACT_APP_CLIENT_ID, REACT_APP_REDIRECT_URI } from '@env';
 
-import { createContext, ReactNode, useState, useEffect } from 'react'
 import * as WebBrowser from 'expo-web-browser';
-import * as AuthSession from 'expo-auth-session'
-import * as Google from 'expo-auth-session/providers/google'
+import * as AuthSession from 'expo-auth-session';
+import * as Google from 'expo-auth-session/providers/google';
+import { createContext, ReactNode, useState, useEffect } from 'react';
+
+import { api } from '../services/api';
+
 
 //garantir o redirecionamento do navegado
 WebBrowser.maybeCompleteAuthSession()
@@ -56,7 +59,25 @@ export function AuthContextProvider({ children }: AuthProviderProps) {
   }
 
   async function signInWithGoogle(access_token: string) {
-    console.log("TOKEN DE AUTENTICAÇÂO", access_token)
+    try {
+      setIsUserLoading(true)
+
+      const tokenResponse = await api.post('/users', [access_token])
+      console.log('tokenResponse', tokenResponse.data)
+
+      api.defaults.headers.common['Authorization'] = `Bearer ${tokenResponse.data.token}`
+
+      const userInfoResponse = await api.get('/me')
+      setUser(userInfoResponse.data.user)
+      console.log('userInfoResponse', userInfoResponse.data)
+
+    } catch (error) {
+      console.log(error);
+      throw error;
+
+    } finally {
+      setIsUserLoading(false)
+    }
   }
 
   useEffect(() => {
