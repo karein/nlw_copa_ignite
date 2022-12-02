@@ -12,7 +12,7 @@ export function Routes() {
   return (
     <Box flex={1} bg="gray.900"> {/* evitar pequeno bug na tranzição durante a navegação */}
       <NavigationContainer>
-        <AppRoutes />
+        {user.name ? <AppRoutes /> : <SignIn />}
       </NavigationContainer>
     </Box>
   )

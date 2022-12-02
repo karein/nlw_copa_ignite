@@ -6,6 +6,7 @@ import { useTheme } from 'native-base';
 import { New } from '../screens/New';
 import { Find } from '../screens/Find';
 import { Pools } from '../screens/Pools';
+import { Details } from '../screens/Details';
 
 
 const { Navigator, Screen } = createBottomTabNavigator();
@@ -37,13 +38,14 @@ export function AppRoutes() {
           tabBarLabel: 'Novo bolão'
         }}
       />
-      <Screen name="Pools" component={Pools}
+      <Screen name="pools" component={Pools}
         options={{
           tabBarIcon: ({ color }) => <SoccerBall color={color} size={size} />,
           tabBarLabel: 'Meus bolões'
         }}
       />
-      <Screen name="Find" component={Find} options={{ tabBarButton: () => null }} />
+      <Screen name="find" component={Find} options={{ tabBarButton: () => null }} />
+      <Screen name="details" component={Details} options={{ tabBarButton: () => null }} />
     </Navigator>
   )
 }
