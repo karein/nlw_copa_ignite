@@ -1,4 +1,4 @@
-import { REACT_APP_CLIENT_ID, REACT_APP_REDIRECT_URI } from '@env';
+// import { REACT_APP_CLIENT_ID, REACT_APP_REDIRECT_URI } from '@env';
 
 import * as WebBrowser from 'expo-web-browser';
 import * as AuthSession from 'expo-auth-session';
@@ -32,14 +32,14 @@ export const AuthContext = createContext({} as AuthContextDataProps);
 //permite compartilhar o contexto com toda a aplicação
 export function AuthContextProvider({ children }: AuthProviderProps) {
   // console.log(AuthSession.makeRedirectUri({ useProxy: true }))
-  console.log('processe env', REACT_APP_CLIENT_ID, '\n', REACT_APP_REDIRECT_URI)
+  console.log('processe env', process.env.REACT_APP_CLIENT_ID, '\n', process.env.REACT_APP_REDIRECT_URI)
 
   const [user, setUser] = useState({} as UserProps)
   const [isUserLoading, setIsUserLoading] = useState(false)
 
   const [request, response, promptAsync] = Google.useAuthRequest({
-    clientId: REACT_APP_CLIENT_ID,
-    redirectUri: REACT_APP_REDIRECT_URI,
+    clientId: process.env.REACT_APP_CLIENT_ID,
+    redirectUri: process.env.REACT_APP_REDIRECT_URI,
     scopes: ['profile', 'email']
   })
 
